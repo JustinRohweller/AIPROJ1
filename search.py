@@ -147,6 +147,7 @@ def depthFirstSearch(problem):
               answerArray.append(Directions.EAST)
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
+          print len(answerArray)
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
