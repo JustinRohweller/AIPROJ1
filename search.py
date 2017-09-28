@@ -93,38 +93,16 @@ def depthFirstSearch(problem):
 
     from game import Directions
     from util import Stack
-    # print "Start:", problem.getStartState()
-    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    # #priming read, don't need primer get rid of this. only one successor is added.
-    #initialize empty stack, set
     myFringe = Stack()
     exploredStates = set()
    
-    #put arrays into fringe (where you are, how you got there.)
-    #plan: put only start first successor onto fringe.
-    # then, loop through using algorithm.
-    
     #TODO comment all code, test, remove primer? start next algorithms.
     #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
     startState = [[problem.getStartState(), -1], []]
-
     myFringe.push(startState)
-    # exploredStates.add(startState[0])
-    #get start states successors.
-    # startSuccessors = problem.getSuccessors(problem.getStartState())
-    
-    #add to fringe first successor, how to get there.
-    # for i in range(0, len(startSuccessors)):
-    #   fringeItem = [startSuccessors[i], [startSuccessors[i][1]]]
-    #   myFringe.push(fringeItem)
-    # print "first Fringe: ", myFringe.pop()
-    # print "second Fringe: ", myFringe.pop()
-    # if start is goal, return stop.
     if (problem.isGoalState(problem.getStartState())):
       # keepLooping = False
       return Directions.STOP
-
     #loop forever (only return escapes.)
     while (True):
       #if fringe is empty, we failed to add another item.
@@ -171,7 +149,64 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print "STARTBREADTHFIRSTSEARCH"
+    print ""
+    print ""
+
+    from game import Directions
+    from util import Queue
+    myFringe = Queue()
+    exploredStates = set()
+   
+    #TODO comment all code, test, remove primer? start next algorithms.
+    #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
+    startState = [[problem.getStartState(), -1], []]
+    myFringe.push(startState)
+    if (problem.isGoalState(problem.getStartState())):
+      # keepLooping = False
+      return Directions.STOP
+    #loop forever (only return escapes.)
+    while (True):
+      #if fringe is empty, we failed to add another item.
+      if (myFringe.isEmpty()):
+        print 'failure fringe is empty.'
+        return ['failure']
+      #if not empty, take most recent one, check if goal, return how got there.
+      else:
+        poppedState = myFringe.pop()
+        if (problem.isGoalState(poppedState[0][0])):
+          answerArray = []
+          #for length of array, print poppedStates directionArray,
+          # populate answerArray with Directions to reach goal.
+          for i in range(0, len(poppedState[1])):
+            if (poppedState[1][i] == "North"):
+              answerArray.append(Directions.NORTH)
+            if (poppedState[1][i] == "South"):
+              answerArray.append(Directions.SOUTH)
+            if (poppedState[1][i] == "East"):
+              answerArray.append(Directions.EAST)
+            if (poppedState[1][i] == "West"):
+              answerArray.append(Directions.WEST)
+          print len(answerArray)
+          return answerArray
+        #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
+        # then add it to explored, and add children to the fringe.
+        if (not(poppedState[0][0] in exploredStates)):
+          exploredStates.add(poppedState[0][0])
+          print "NODE EXPLORED: ", poppedState[0][0]
+          #call successor only on coordinates.
+          newSuccessors = problem.getSuccessors(poppedState[0][0])
+          newPathGuide = poppedState[1]
+      #get all successors, put them all in fringe. with how to get there.
+          for i in range(0, len(newSuccessors)):
+            newPathGuide.append(newSuccessors[i][1])
+            nextNode = [newSuccessors[i], newPathGuide]
+            myFringe.push(nextNode)
+            newPathGuide = newPathGuide[:-1]
+
+    print ""
+    print ""
+    print "ENDBREADTHFIRSTSEARCH"
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
