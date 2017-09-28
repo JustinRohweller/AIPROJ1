@@ -107,8 +107,6 @@ def depthFirstSearch(problem):
     
     #TODO comment all code, test, remove primer? start next algorithms.
     #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    print ""
     startState = [[problem.getStartState(), -1], []]
 
     myFringe.push(startState)
@@ -136,17 +134,11 @@ def depthFirstSearch(problem):
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
-        print "item taken from fringe: ",  poppedState
         if (problem.isGoalState(poppedState[0][0])):
           answerArray = []
           #for length of array, print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
-          print "length of final poppedState: ", len(poppedState[1])
           for i in range(0, len(poppedState[1])):
-            print ""
-            print "poppedState[1][i]", poppedState[1][i]
-            print ""
-            print "answerArray: ", answerArray
             if (poppedState[1][i] == "North"):
               answerArray.append(Directions.NORTH)
             if (poppedState[1][i] == "South"):
@@ -158,33 +150,18 @@ def depthFirstSearch(problem):
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
-        print "poppedState: ", poppedState[0][0]
         if (not(poppedState[0][0] in exploredStates)):
-          print "poppedState[0][0] not in exploredStates", not poppedState[0][0] in exploredStates
           exploredStates.add(poppedState[0][0])
-          print ""
-          print ""
           print "NODE EXPLORED: ", poppedState[0][0]
-          print ""
-          print ""
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
-          print "newPathGuide: ", newPathGuide
-          print "new Successors: ", newSuccessors
       #get all successors, put them all in fringe. with how to get there.
           for i in range(0, len(newSuccessors)):
             newPathGuide.append(newSuccessors[i][1])
             nextNode = [newSuccessors[i], newPathGuide]
-            print "nodePushed: ", nextNode
             myFringe.push(nextNode)
-            print ""
-            print "newPathGuide1: ", newPathGuide
             newPathGuide = newPathGuide[:-1]
-            print "newPathGuide2: ", newPathGuide
-            print ""
-          print "exploredStates: ", exploredStates
-          print ""
 
     print ""
     print ""
