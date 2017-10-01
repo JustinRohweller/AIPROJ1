@@ -11,6 +11,10 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+# Justin Rohweller Pac-man project 1
+# I used the internet to figure out how to delete the last item from my array:
+# newPathGuide = newPathGuide[:-1]
+
 
 """
 In search.py, you will implement generic search algorithms which are called by
@@ -82,39 +86,39 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    #print "Start:", problem.getStartState()
+    #print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    #print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    print "STARTDEPTHFIRSTSEARCH"
-    print ""
-    print ""
+    #print "STARTDEPTHFIRSTSEARCH"
+    #print ""
+    #print ""
 
     from game import Directions
     from util import Stack
     myFringe = Stack()
     exploredStates = set()
    
-    #TODO comment all code, test, remove primer? start next algorithms.
-    #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
+    
+    
     startState = [[problem.getStartState(), -1], []]
     myFringe.push(startState)
     if (problem.isGoalState(problem.getStartState())):
-      # keepLooping = False
+      
       return Directions.STOP
     #loop forever (only return escapes.)
     while (True):
       #if fringe is empty, we failed to add another item.
       if (myFringe.isEmpty()):
-        print 'failure fringe is empty.'
+        #print 'failure fringe is empty.'
         return ['failure']
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
         if (problem.isGoalState(poppedState[0][0])):
           answerArray = []
-          #for length of array, print poppedStates directionArray,
+          #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
           for i in range(0, len(poppedState[1])):
             if (poppedState[1][i] == "North"):
@@ -125,13 +129,13 @@ def depthFirstSearch(problem):
               answerArray.append(Directions.EAST)
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
-          print len(answerArray)
+          #print len(answerArray)
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          print "NODE EXPLORED: ", poppedState[0][0]
+          #print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -142,41 +146,41 @@ def depthFirstSearch(problem):
             myFringe.push(nextNode)
             newPathGuide = newPathGuide[:-1]
 
-    print ""
-    print ""
-    print "ENDDEPTHFIRSTSEARCH"
+    #print ""
+    #print ""
+    #print "ENDDEPTHFIRSTSEARCH"
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    print "STARTBREADTHFIRSTSEARCH"
-    print ""
-    print ""
+    #print "STARTBREADTHFIRSTSEARCH"
+    #print ""
+    #print ""
 
     from game import Directions
     from util import Queue
     myFringe = Queue()
     exploredStates = set()
    
-    #TODO comment all code, test, remove primer? start next algorithms.
-    #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
+    
+    
     startState = [[problem.getStartState(), -1], []]
     myFringe.push(startState)
     if (problem.isGoalState(problem.getStartState())):
-      # keepLooping = False
+      
       return Directions.STOP
     #loop forever (only return escapes.)
     while (True):
       #if fringe is empty, we failed to add another item.
       if (myFringe.isEmpty()):
-        print 'failure fringe is empty.'
+        #print 'failure fringe is empty.'
         return ['failure']
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
         if (problem.isGoalState(poppedState[0][0])):
           answerArray = []
-          #for length of array, print poppedStates directionArray,
+          #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
           for i in range(0, len(poppedState[1])):
             if (poppedState[1][i] == "North"):
@@ -187,13 +191,13 @@ def breadthFirstSearch(problem):
               answerArray.append(Directions.EAST)
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
-          print len(answerArray)
+          #print len(answerArray)
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          print "NODE EXPLORED: ", poppedState[0][0]
+          #print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -204,41 +208,40 @@ def breadthFirstSearch(problem):
             myFringe.push(nextNode)
             newPathGuide = newPathGuide[:-1]
 
-    print ""
-    print ""
-    print "ENDBREADTHFIRSTSEARCH"
+    #print ""
+    #print ""
+    #print "ENDBREADTHFIRSTSEARCH"
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    print "STARTUNIFORMCOSTSEARCH"
-    print ""
-    print ""
+    #print "STARTUNIFORMCOSTSEARCH"
+    #print ""
+    #print ""
 
     from game import Directions
     from util import PriorityQueue
     myFringe = PriorityQueue()
     exploredStates = set()
    
-    #TODO comment all code, test, remove primer? start next algorithms.
-    #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
+    
+    
     startState = [[problem.getStartState(), -1], []]
     myFringe.push(startState, 0)
     if (problem.isGoalState(problem.getStartState())):
-      # keepLooping = False
       return Directions.STOP
     #loop forever (only return escapes.)
     while (True):
       #if fringe is empty, we failed to add another item.
       if (myFringe.isEmpty()):
-        print 'failure fringe is empty.'
+        #print 'failure fringe is empty.'
         return ['failure']
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
         if (problem.isGoalState(poppedState[0][0])):
           answerArray = []
-          #for length of array, print poppedStates directionArray,
+          #for length of array, ##print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
           for i in range(0, len(poppedState[1])):
             if (poppedState[1][i] == "North"):
@@ -249,13 +252,13 @@ def uniformCostSearch(problem):
               answerArray.append(Directions.EAST)
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
-          print len(answerArray)
+          #print len(answerArray)
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          print "NODE EXPLORED: ", poppedState[0][0]
+          #print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -266,9 +269,9 @@ def uniformCostSearch(problem):
             myFringe.push(nextNode, nextNode[0][2])
             newPathGuide = newPathGuide[:-1]
 
-    print ""
-    print ""
-    print "ENDUNIFORMCOSTSEARCH"
+    #print ""
+    #print ""
+    #print "ENDUNIFORMCOSTSEARCH"
 
 def nullHeuristic(state, problem=None):
     """
@@ -280,36 +283,36 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    print "STARTASTARSEARCH"
-    print ""
-    print ""
+    #print "STARTASTARSEARCH"
+    #print ""
+    #print ""
     
     from game import Directions
     from util import PriorityQueue
     myFringe = PriorityQueue()
     exploredStates = set()
     # heuristic(problem.getStartState(), problem)
-    # print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
+    # #print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     
-    #TODO comment all code, test, remove primer? start next algorithms.
-    #Wednesday: finish depth, thursday: finish breadth, UCS, saturday: A*, clean, submit
+    
+    
     startState = [[problem.getStartState(), -1], []]
     myFringe.push(startState, heuristic(problem.getStartState(), problem))
     if (problem.isGoalState(problem.getStartState())):
-      # keepLooping = False
+      
       return Directions.STOP
     #loop forever (only return escapes.)
     while (True):
       #if fringe is empty, we failed to add another item.
       if (myFringe.isEmpty()):
-        print 'failure fringe is empty.'
+        #print 'failure fringe is empty.'
         return ['failure']
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
         if (problem.isGoalState(poppedState[0][0])):
           answerArray = []
-          #for length of array, print poppedStates directionArray,
+          #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
           for i in range(0, len(poppedState[1])):
             if (poppedState[1][i] == "North"):
@@ -320,13 +323,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
               answerArray.append(Directions.EAST)
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
-          print len(answerArray)
+          #print len(answerArray)
           return answerArray
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          print "NODE EXPLORED: ", poppedState[0][0]
+          #print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -338,9 +341,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             myFringe.push(nextNode, nextNodeValue)
             newPathGuide = newPathGuide[:-1]
 
-    print ""
-    print ""
-    print "ENDASTARSEARCH"
+    #print ""
+    #print ""
+    #print "ENDASTARSEARCH"
 
 
 # Abbreviations
