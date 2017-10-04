@@ -279,8 +279,8 @@ class CornersProblem(search.SearchProblem):
         """
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
-        top, right = self.walls.height-2, self.walls.width-2
-        self.corners = ((1,1), (1,top), (right, 1), (right, top))
+        self.top, self.right = self.walls.height-2, self.walls.width-2
+        self.corners = ((1,1), (1,self.top), (self.right, 1), (self.right, self.top))
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -288,19 +288,23 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        # i used some code from foodsearchproblem.
+        # i used some code from foodsearchproblem within this file.
+        # rename stuff, change from full grid into 2x2
+        #2d grid 4 corners
         print "startingGameState.getFood(): ", startingGameState.getFood()
         copy = startingGameState.getFood().copy()
         for i in range(0, len(startingGameState.getFood()[0])-1):
             for j in range(0, len(startingGameState.getFood()[1])-1):
-               print "starti: ", startingGameState.getFood()[i][j]
+              #  print "starti: ", startingGameState.getFood()[i][j]
                copy[i][j] = False
         copy[1][1] = True
-        copy[1][top] = True
-        copy[right][1] = True
-        copy[right][top] = True
+        copy[1][self.top] = True
+        copy[self.right][1] = True
+        copy[self.right][self.top] = True
+        self.cornerArray = [[True,True], [True, True]]
+        print "startingGamecornerarray: ", self.cornerArray
         print "startingGameState.getFood()copy: ", copy
-        self.start = (self.startingPosition, copy)
+        self.start = (self.startingPosition, self.cornerArray)
 
     def getStartState(self):
         """
@@ -315,9 +319,17 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        print "state[1].count(): ", state[1].count()
-        # print "state: ", state[1] 
-        return state[1].count() == 0
+        # print "state[1].count(): ", state[1].count()
+        print "state: ", state[1] 
+        isComplete = False
+        cornerCount = 0
+        for i in range(0, len(state[1][0])):
+            for j in range(0, len(state[1][1])):
+                if state[1][i][j] == False:
+                    cornerCount = cornerCount+1
+        if cornerCount == 4:
+          isComplete = True
+        return isComplete
 
     def getSuccessors(self, state):
         """
@@ -338,9 +350,27 @@ class CornersProblem(search.SearchProblem):
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
+                #change nextFood[nextx][nexty] to false only if corner.
+                # if nextx,y is corner, put T into corner.
+                # nextFood = state[1].copy
+                # if [nextx][nexty] = (1,1), (1,self.top), (self.right, 1), (self.right, self.top)
+                    #nextFood[option][chose] = True (4 ifs.)
                 nextFood = state[1].copy()
-                nextFood[nextx][nexty] = False
-                successors.append( ( ((nextx, nexty), nextFood), action, 1) )
+                if (nextx, nexty) == (1,1):
+                    print "nextFoodUpdated: ", (self.right,self.top)
+                    nextFood[1][0] = False
+                if (nextx, nexty) == (1,self.top):
+                    print "nextFoodUpdated: ", (self.right,self.top)
+                    nextFood[0][0] = False
+                if (nextx, nexty) == (self.right,1):
+                    print "nextFoodUpdated: ", (self.right,self.top)
+                    nextFood[1][1] = False
+                if (nextx, nexty) == (self.right,self.top):
+                    print "nextFoodUpdated: ", (self.right,self.top)
+                    nextFood[0][1] = False
+                print 'nextFood: ', nextFood
+                # nextFood[nextx][nexty] = False
+                successors.append( ( {(nextx, nexty), nextFood), action, 1) )
         
         return successors
 
