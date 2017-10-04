@@ -288,7 +288,19 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        self.start = (self.startingPosition, startingGameState.getFood())
+        # i used some code from foodsearchproblem.
+        print "startingGameState.getFood(): ", startingGameState.getFood()
+        copy = startingGameState.getFood().copy()
+        for i in range(0, len(startingGameState.getFood()[0])-1):
+            for j in range(0, len(startingGameState.getFood()[1])-1):
+               print "starti: ", startingGameState.getFood()[i][j]
+               copy[i][j] = False
+        copy[1][1] = True
+        copy[1][top] = True
+        copy[right][1] = True
+        copy[right][top] = True
+        print "startingGameState.getFood()copy: ", copy
+        self.start = (self.startingPosition, copy)
 
     def getStartState(self):
         """
@@ -303,6 +315,8 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        print "state[1].count(): ", state[1].count()
+        # print "state: ", state[1] 
         return state[1].count() == 0
 
     def getSuccessors(self, state):
@@ -319,12 +333,6 @@ class CornersProblem(search.SearchProblem):
         successors = []
         self._expanded += 1 # DO NOT CHANGE
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
             "*** YOUR CODE HERE ***"
             x,y = state[0]
             dx, dy = Actions.directionToVector(action)
