@@ -386,7 +386,6 @@ def cornersHeuristic(state, problem):
     top, right = walls.height-2, walls.width-2
     "*** YOUR CODE HERE ***"
     from util import manhattanDistance
-    # dog
     # get manhattan for each corner, multiply closest one by number of corners left.
     dist = []
     dist.append(manhattanDistance(state[0], [1,1]))
@@ -491,7 +490,28 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    from util import manhattanDistance
+    #for all of foodgrid, if food, append the manhattan distance to it to our array.
+    #then, we already wrote code to multiply by however many pellets are left.
+
+    # print "foodGrid: ", foodGrid
+    # get manhattan for each food, multiply closest one by number of foods left.
+    # find farthest one, divide by number of pellets left (assumes theres is obstacles.)
+    dist = []
+    for j in range(0, len(foodGrid[0])):
+      for k in range(0, len(foodGrid[1])):
+        if foodGrid[j][k] == True:
+          dist.append(manhattanDistance(state[0], [j,k]))
+    # print "foodGrid: ", dist
+
+    minimum = -500000
+    for i in range(0, len(dist)):
+        if dist[i] > minimum:
+          minimum = dist[i] 
+    if (state[1].count()!= 0):
+      return float(minimum) / float(state[1].count())
+    else:
+      return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
