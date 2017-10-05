@@ -279,8 +279,8 @@ class CornersProblem(search.SearchProblem):
         """
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
-        top, right = self.walls.height-2, self.walls.width-2
-        self.corners = ((1,1), (1,top), (right, 1), (right, top))
+        self.top, self.right = self.walls.height-2, self.walls.width-2
+        self.corners = ((1,1), (1,self.top), (self.right, 1), (self.right, self.top))
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -293,12 +293,12 @@ class CornersProblem(search.SearchProblem):
         copy = startingGameState.getFood().copy()
         for i in range(0, len(startingGameState.getFood()[0])-1):
             for j in range(0, len(startingGameState.getFood()[1])-1):
-               print "starti: ", startingGameState.getFood()[i][j]
+              #  print "starti: ", startingGameState.getFood()[i][j]
                copy[i][j] = False
         copy[1][1] = True
-        copy[1][top] = True
-        copy[right][1] = True
-        copy[right][top] = True
+        copy[1][self.top] = True
+        copy[self.right][1] = True
+        copy[self.right][self.top] = True
         print "startingGameState.getFood()copy: ", copy
         self.start = (self.startingPosition, copy)
 
@@ -315,7 +315,7 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        print "state[1].count(): ", state[1].count()
+        # print "state[1].count(): ", state[1].count()
         # print "state: ", state[1] 
         return state[1].count() == 0
 
@@ -339,7 +339,18 @@ class CornersProblem(search.SearchProblem):
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextFood = state[1].copy()
-                nextFood[nextx][nexty] = False
+                if (nextx, nexty) == (1,1): 
+                    print "nextFoodUpdated: ", (1,1)
+                    nextFood[nextx][nexty] = False 
+                if (nextx, nexty) == (1,self.top): 
+                    print "nextFoodUpdated: ", (1,self.top) 
+                    nextFood[nextx][nexty] = False 
+                if (nextx, nexty) == (self.right,1): 
+                    print "nextFoodUpdated: ", (self.right, 1) 
+                    nextFood[nextx][nexty] = False 
+                if (nextx, nexty) == (self.right,self.top): 
+                    print "nextFoodUpdated: ", (self.right,self.top) 
+                    nextFood[nextx][nexty] = False 
                 successors.append( ( ((nextx, nexty), nextFood), action, 1) )
         
         return successors
