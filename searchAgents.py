@@ -507,11 +507,15 @@ def foodHeuristic(state, problem):
     minimum = -500000
     for i in range(0, len(dist)):
         if dist[i] > minimum:
-          minimum = dist[i] 
-    if (state[1].count()!= 0):
-      return float(minimum) / float(state[1].count())
-    else:
+          minimum = dist[i]
+    # print "min: ", minimum 
+    # print "pellets: ", state[1].count()
+    if (state[1].count()== 0 or minimum == -500000):
       return 0
+    else:
+      return float(minimum)
+
+    # return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
