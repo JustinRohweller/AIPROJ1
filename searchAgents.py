@@ -11,6 +11,9 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+#Justin Rohweller
+#python project 2
+
 
 """
 This file contains all of the agents that can be selected to control Pacman.  To
@@ -288,18 +291,16 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        # i used some code from foodsearchproblem.
-        print "startingGameState.getFood(): ", startingGameState.getFood()
+        # i used some code from foodsearchproblem from the bottom of this file.
         copy = startingGameState.getFood().copy()
         for i in range(0, len(startingGameState.getFood()[0])-1):
             for j in range(0, len(startingGameState.getFood()[1])-1):
-              #  print "starti: ", startingGameState.getFood()[i][j]
                copy[i][j] = False
         copy[1][1] = True
         copy[1][self.top] = True
         copy[self.right][1] = True
         copy[self.right][self.top] = True
-        print "startingGameState.getFood()copy: ", copy
+        # print "startingGameState.getFood()copy: ", copy
         self.start = (self.startingPosition, copy)
 
     def getStartState(self):
@@ -315,8 +316,6 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        # print "state[1].count(): ", state[1].count()
-        # print "state: ", state[1] 
         return state[1].count() == 0
 
     def getSuccessors(self, state):
@@ -338,20 +337,20 @@ class CornersProblem(search.SearchProblem):
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
-                nextFood = state[1].copy()
+                cornerFoodMap = state[1].copy()
                 if (nextx, nexty) == (1,1): 
-                    print "nextFoodUpdated: ", (1,1)
-                    nextFood[nextx][nexty] = False 
+                    # print "cornerFoodMapUpdated: ", (1,1)
+                    cornerFoodMap[nextx][nexty] = False 
                 if (nextx, nexty) == (1,self.top): 
-                    print "nextFoodUpdated: ", (1,self.top) 
-                    nextFood[nextx][nexty] = False 
+                    # print "cornerFoodMapUpdated: ", (1,self.top) 
+                    cornerFoodMap[nextx][nexty] = False 
                 if (nextx, nexty) == (self.right,1): 
-                    print "nextFoodUpdated: ", (self.right, 1) 
-                    nextFood[nextx][nexty] = False 
+                    # print "cornerFoodMapUpdated: ", (self.right, 1) 
+                    cornerFoodMap[nextx][nexty] = False 
                 if (nextx, nexty) == (self.right,self.top): 
-                    print "nextFoodUpdated: ", (self.right,self.top) 
-                    nextFood[nextx][nexty] = False 
-                successors.append( ( ((nextx, nexty), nextFood), action, 1) )
+                    # print "cornerFoodMapUpdated: ", (self.right,self.top) 
+                    cornerFoodMap[nextx][nexty] = False 
+                successors.append( ( ((nextx, nexty), cornerFoodMap), action, 1) )
         
         return successors
 
@@ -384,9 +383,21 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
+    top, right = walls.height-2, walls.width-2
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    from util import manhattanDistance
+    # dog
+    # get manhattan for each corner, multiply closest one by number of corners left.
+    dist = []
+    dist.append(manhattanDistance(state[0], [1,1]))
+    dist.append(manhattanDistance(state[0], [1,top]))
+    dist.append(manhattanDistance(state[0], [right,1]))
+    dist.append(manhattanDistance(state[0], [right,top]))
+    minimum = 500000
+    for i in range(0, len(dist)):
+        if dist[i] < minimum:
+          minimum = dist[i] 
+    return minimum * state[1].count() # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
