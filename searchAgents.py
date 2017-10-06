@@ -385,19 +385,13 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
     top, right = walls.height-2, walls.width-2
     "*** YOUR CODE HERE ***"
-    from util import manhattanDistance
-    # get manhattan for each corner, multiply closest one by number of corners left.
-    dist = []
-    dist.append(manhattanDistance(state[0], [1,1]))
-    dist.append(manhattanDistance(state[0], [1,top]))
-    dist.append(manhattanDistance(state[0], [right,1]))
-    dist.append(manhattanDistance(state[0], [right,top]))
-    minimum = 500000
-    for i in range(0, len(dist)):
-        if dist[i] < minimum:
-          minimum = dist[i] 
-    return minimum * state[1].count() # Default to trivial solution
-
+    #just however many pellets are left.
+    print state[1].count()
+    if state[1].count() == 0:
+      return 0
+    else:
+      return state[1].count() # Default to trivial solution
+    # return 0
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
@@ -494,6 +488,7 @@ def foodHeuristic(state, problem):
     #for all of foodgrid, if food, append the manhattan distance to it to our array.
     #then, we already wrote code to multiply by however many pellets are left.
 
+    #zx
     # print "foodGrid: ", foodGrid
     # get manhattan for each food, multiply closest one by number of foods left.
     # find farthest one, divide by number of pellets left (assumes theres is obstacles.)
@@ -501,16 +496,17 @@ def foodHeuristic(state, problem):
     for j in range(0, len(foodGrid[0])):
       for k in range(0, len(foodGrid[1])):
         if foodGrid[j][k] == True:
+          print 'jk: ', j,k
           dist.append(manhattanDistance(state[0], [j,k]))
     # print "foodGrid: ", dist
 
-    minimum = -500000
+    minimum = 500000
     for i in range(0, len(dist)):
-        if dist[i] > minimum:
+        if dist[i] < minimum:
           minimum = dist[i]
     # print "min: ", minimum 
     # print "pellets: ", state[1].count()
-    if (state[1].count()== 0 or minimum == -500000):
+    if (state[1].count()== 0 or minimum == 500000):
       return 0
     else:
       return float(minimum)
