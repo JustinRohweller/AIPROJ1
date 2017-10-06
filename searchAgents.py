@@ -492,26 +492,72 @@ def foodHeuristic(state, problem):
     # print "foodGrid: ", foodGrid
     # get manhattan for each food, multiply closest one by number of foods left.
     # find farthest one, divide by number of pellets left (assumes theres is obstacles.)
+    #how far away is closest pellet? subtract one.
+
+    #iterate through new, checking manhattanDistance to each one.
+    # Find minimum manhattanDistance,
+    #all distances minus number of dots? (weigh in favor of dots)
+    # get grid, pretend it has no walls, solve, return.
+    #find two farthest, pick closer one.
     dist = []
-    for j in range(0, len(foodGrid[0])):
-      for k in range(0, len(foodGrid[1])):
-        if foodGrid[j][k] == True:
-          print 'jk: ', j,k
-          dist.append(manhattanDistance(state[0], [j,k]))
-    # print "foodGrid: ", dist
+    new=foodGrid.asList()
 
-    minimum = 500000
-    for i in range(0, len(dist)):
-        if dist[i] < minimum:
-          minimum = dist[i]
-    # print "min: ", minimum 
-    # print "pellets: ", state[1].count()
-    if (state[1].count()== 0 or minimum == 500000):
-      return 0
-    else:
-      return float(minimum)
+    for  l in range(0, len(new)):
+        dist.append(manhattanDistance(state[0], new[l]))
+    second = 0
+    total = -600000
+    idx = 0
+    dist2 = dist
+    for  m in range(0, len(dist)):
+        if total < dist[m]:
+            total = dist[m]
+            idx = m
+    if idx != 0:
+        del dist[idx]
+      
+    idx2 = 0
+    # print "idx: ", idx
+    for  m in range(0, len(dist)):
+        if second < dist[m]:
+            second = dist[m]
+            idx2 = dist[m]
 
-    # return 0
+    # x = manhattanDistance(new[idx], dist2[idx2])
+    # total = (state[1].count()+ (total-1)) - total
+    # if state[1].count() == 13:
+    #   for j in range(0, len(new)):
+    #     for k in range(0, len(new[j])):
+    #       new[j][k] = 0
+          # if foodGrid[j][k] == True:
+                # print 'jk: ', j,k
+              # dist.append(manhattanDistance(state[0], [j][k]))
+    if state[1].count() == 13:
+        # print "first: ", x
+        print "second: ", mazeDistance( (2,4), (5,6), problem)
+    # print "new: ", total
+    # print ""
+    # if state[1].count() == 13:
+      # print "end"
+
+    # minimum = 500000
+    # for i in range(0, len(dist)):
+    #     if dist[i] < minimum:
+    #       minimum = dist[i]
+    # # print "min: ", minimum 
+    # # print "pellets: ", state[1].count()
+    # if (state[1].count()== 0 or minimum == 500000):
+    #   return 0
+    # else:
+    #   return float(minimum)
+
+    # print state[1].count()
+    # if total <= 0:
+    #   return 0
+    # else:
+    #   return total
+    # return mazeDistance(pos1, pos2, position)
+
+    return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
