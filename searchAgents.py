@@ -484,12 +484,7 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    from util import manhattanDistance
-    #for all of foodgrid, if food, append the manhattan distance to it to our array.
-    #then, we already wrote code to multiply by however many pellets are left.
-
-    #zx
-    # print "foodGrid: ", foodGrid
+     # print "foodGrid: ", foodGrid
     # get manhattan for each food, multiply closest one by number of foods left.
     # find farthest one, divide by number of pellets left (assumes theres is obstacles.)
     #how far away is closest pellet? subtract one.
@@ -498,7 +493,17 @@ def foodHeuristic(state, problem):
     # Find minimum manhattanDistance,
     #all distances minus number of dots? (weigh in favor of dots)
     # get grid, pretend it has no walls, solve, return.
-    #find two farthest, pick closer one.
+
+    #for all of foodgrid, if food, append the manhattan distance to it to our array.
+    #then, we already wrote code to multiply by however many pellets are left.
+    """other ideas^"""
+    from util import manhattanDistance
+    
+
+    #zx
+    #plans: find mazedistance to closest position, add 1 for number of pellets left.
+    
+    #or: find two farthest, add mazedistances, add distance to second furthest pellet.
     dist = []
     new=foodGrid.asList()
 
@@ -556,6 +561,21 @@ def foodHeuristic(state, problem):
     # else:
     #   return total
     # return mazeDistance(pos1, pos2, position)
+
+    #mazeDistance
+    x1, y1 = position
+    x2, y2 = closestDot
+    walls = problem.walls
+    assert not walls[x1][y1], 'point1 is a wall: ' + str(point1)
+    assert not walls[x2][y2], 'point2 is a wall: ' + str(point2)
+    prob = PositionSearchProblem(gameState, start=point1, goal=point2, warn=False, visualize=False)
+    distanceToDot = len(search.bfs(prob))
+
+    # put in check for whether distanceToDot is a lot bigger than the approximation, if so, test with different dot. 
+
+    #idea: approx closest dot, add mazeDistance to it.
+
+    #return distanceToDot + state[1].count()
 
     return 0
 
