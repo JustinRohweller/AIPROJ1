@@ -292,7 +292,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     myFringe = PriorityQueue()
     exploredStates = set()
     # heuristic(problem.getStartState(), problem)
-    print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
+    # print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     
     
     

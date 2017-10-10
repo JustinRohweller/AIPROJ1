@@ -588,21 +588,24 @@ def foodHeuristic(state, problem):
    
     
     
-    startState = [[position, -1], []]
+    startState = [state, []]
     myFringe.push(startState)
     if (position == closestDot):
-      
-      return Directions.STOP
+      print 'start position is end.'
+      # return Directions.STOP
     #loop forever (only return escapes.)
-    while (True):
+    keepLooping = True
+    while (keepLooping):
       #if fringe is empty, we failed to add another item.
       if (myFringe.isEmpty()):
-        #print 'failure fringe is empty.'
-        return ['failure']
+        print 'failure fringe is empty.'
+        keepLooping = False
+        # return ['failure']
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
-        if (closestDot ==poppedState[0][0]):
+        # print poppedState[0][0][0]
+        if (closestDot == poppedState[0][0][0]):
           answerArray = []
           #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
@@ -617,16 +620,19 @@ def foodHeuristic(state, problem):
               answerArray.append(Directions.WEST)
           #print len(answerArray)
           distanceToDot = len(answerArray)
+          keepLooping = False
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
-        if (not(poppedState[0][0] in exploredStates)):
-          exploredStates.add(poppedState[0][0])
+        if (not(poppedState[0][0][0] in exploredStates)):
+          exploredStates.add(poppedState[0][0][0])
           #print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
-          newSuccessors = problem.getSuccessors(poppedState[0][0])
+          print "her", poppedState[0][0]
+          newSuccessors = problem.getSuccessors(poppedState[0][0][0])
           newPathGuide = poppedState[1]
       #get all successors, put them all in fringe. with how to get there.
           for i in range(0, len(newSuccessors)):
+            print newSuccessors[i][1]
             newPathGuide.append(newSuccessors[i][1])
             nextNode = [newSuccessors[i], newPathGuide]
             myFringe.push(nextNode)
