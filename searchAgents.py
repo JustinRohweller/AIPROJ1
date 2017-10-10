@@ -523,51 +523,51 @@ def foodHeuristic(state, problem):
     # print state[1].count()
     if state[1].count() > 0:
         closestDot = new[m]
-        # print "closestDot", closestDot
-    # if idx != 0:
-    #     del dist[idx]
-      
-    # idx2 = 0
-    # # print "idx: ", idx
-    # for  m in range(0, len(dist)):
-    #     if second < dist[m]:
-    #         second = dist[m]
-    #         idx2 = dist[m]
+    # print "closestDot", closestDot
+        # if idx != 0:
+        #     del dist[idx]
+          
+        # idx2 = 0
+        # # print "idx: ", idx
+        # for  m in range(0, len(dist)):
+        #     if second < dist[m]:
+        #         second = dist[m]
+        #         idx2 = dist[m]
 
-    # x = manhattanDistance(new[idx], dist2[idx2])
-    # total = (state[1].count()+ (total-1)) - total
-    # if state[1].count() == 13:
-    #   for j in range(0, len(new)):
-    #     for k in range(0, len(new[j])):
-    #       new[j][k] = 0
-          # if foodGrid[j][k] == True:
-                # print 'jk: ', j,k
-              # dist.append(manhattanDistance(state[0], [j][k]))
-    # if state[1].count() == 13:
-        # print "first: ", x
-        # print "second: ", mazeDistance( (2,4), (5,6), problem)
-    # print "new: ", total
-    # print ""
-    # if state[1].count() == 13:
-      # print "end"
+        # x = manhattanDistance(new[idx], dist2[idx2])
+        # total = (state[1].count()+ (total-1)) - total
+        # if state[1].count() == 13:
+        #   for j in range(0, len(new)):
+        #     for k in range(0, len(new[j])):
+        #       new[j][k] = 0
+              # if foodGrid[j][k] == True:
+                    # print 'jk: ', j,k
+                  # dist.append(manhattanDistance(state[0], [j][k]))
+        # if state[1].count() == 13:
+            # print "first: ", x
+            # print "second: ", mazeDistance( (2,4), (5,6), problem)
+        # print "new: ", total
+        # print ""
+        # if state[1].count() == 13:
+          # print "end"
 
-    # minimum = 500000
-    # for i in range(0, len(dist)):
-    #     if dist[i] < minimum:
-    #       minimum = dist[i]
-    # # print "min: ", minimum 
-    # # print "pellets: ", state[1].count()
-    # if (state[1].count()== 0 or minimum == 500000):
-    #   return 0
-    # else:
-    #   return float(minimum)
+        # minimum = 500000
+        # for i in range(0, len(dist)):
+        #     if dist[i] < minimum:
+        #       minimum = dist[i]
+        # # print "min: ", minimum 
+        # # print "pellets: ", state[1].count()
+        # if (state[1].count()== 0 or minimum == 500000):
+        #   return 0
+        # else:
+        #   return float(minimum)
 
-    # print state[1].count()
-    # if total <= 0:
-    #   return 0
-    # else:
-    #   return total
-    # return mazeDistance(pos1, pos2, position)
+        # print state[1].count()
+        # if total <= 0:
+        #   return 0
+        # else:
+        #   return total
+        # return mazeDistance(pos1, pos2, position)
 
     #mazeDistance
     x1, y1 = position
@@ -588,9 +588,9 @@ def foodHeuristic(state, problem):
    
     
     
-    startState = [[problem.getStartState(), -1], []]
+    startState = [[position, -1], []]
     myFringe.push(startState)
-    if (problem.isGoalState(problem.getStartState())):
+    if (position == closestDot):
       
       return Directions.STOP
     #loop forever (only return escapes.)
@@ -602,7 +602,7 @@ def foodHeuristic(state, problem):
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
-        if (problem.isGoalState(poppedState[0][0])):
+        if (closestDot ==poppedState[0][0][0]):
           answerArray = []
           #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
@@ -616,7 +616,7 @@ def foodHeuristic(state, problem):
             if (poppedState[1][i] == "West"):
               answerArray.append(Directions.WEST)
           #print len(answerArray)
-          return answerArray
+          distanceToDot = len(answerArray)
         #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
@@ -635,7 +635,7 @@ def foodHeuristic(state, problem):
 
 
     # distanceToDot = len(search.bfs(prob))
-    # print "distanceToDot: ", distanceToDot
+    print "distanceToDot: ", distanceToDot
     # put in check for whether distanceToDot is a lot bigger than the approximation, if so, test with different dot. 
 
     #idea: approx closest dot, add mazeDistance to it.
