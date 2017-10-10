@@ -602,7 +602,7 @@ def foodHeuristic(state, problem):
       #if not empty, take most recent one, check if goal, return how got there.
       else:
         poppedState = myFringe.pop()
-        if (closestDot ==poppedState[0][0][0]):
+        if (closestDot ==poppedState[0][0]):
           answerArray = []
           #for length of array, #print poppedStates directionArray,
           # populate answerArray with Directions to reach goal.
