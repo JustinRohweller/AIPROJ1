@@ -620,7 +620,7 @@ def foodHeuristic(state, problem):
     # return distanceToDot + state[1].count()
     return (total * wallsBetween) + wallsBetween
 
-    return 0
+    # return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
