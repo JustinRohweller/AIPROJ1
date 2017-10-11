@@ -509,7 +509,6 @@ def foodHeuristic(state, problem):
     #number of walls between you and nearest dot. *4 + number of dots left + how far away (manhattan) dot is.
     #number of dots times how far away each dot is as a percentage of the total distance.
 
-    #at end, do what he says in the comments for some of this stuff
     dist = []
     new=foodGrid.asList()
     walls = problem.walls.asList()
@@ -517,7 +516,7 @@ def foodHeuristic(state, problem):
     #find if there is walls between you and point.
     #goal: something close to the mazedistance.
 
-    # find closestDot
+    # estimate closestDot
     for  l in range(0, len(new)):
         dist.append(manhattanDistance(state[0], new[l]))
     second = 0
@@ -584,7 +583,21 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        dist = []
+        new=food.asList()
+        for  l in range(0, len(new)):
+            dist.append(mazeDistance(startPosition, new[l], gameState))
+        second = 0
+        total = 600000
+        idx = 0
+        dist2 = dist
+        for  m in range(0, len(dist)):
+            if total > dist[m]:
+                total = dist[m]
+                idx = m
+        point2 = new[idx] # closest dot.
+        prob = PositionSearchProblem(gameState, start=startPosition, goal=point2, warn=False, visualize=False)
+        return search.bfs(prob)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
