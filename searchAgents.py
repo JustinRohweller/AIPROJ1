@@ -569,6 +569,7 @@ class ClosestDotSearchAgent(SearchAgent):
                     raise Exception, 'findPathToClosestDot returned an illegal move: %s!\n%s' % t
                 currentState = currentState.generateSuccessor(0, action)
         self.actionIndex = 0
+        self.findPathInfo = {}
         print 'Path found with cost %d.' % len(self.actions)
 
     def findPathToClosestDot(self, gameState):
@@ -583,6 +584,8 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        # works, but perhaps not as fast as I would like.
+        #checks how far away every dot is, then picks the closest one, returns bfs to get to it.
         dist = []
         new=food.asList()
         for  l in range(0, len(new)):
