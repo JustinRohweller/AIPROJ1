@@ -586,6 +586,7 @@ class ClosestDotSearchAgent(SearchAgent):
         "*** YOUR CODE HERE ***"
         # works, but perhaps not as fast as I would like.
         #checks how far away every dot is, then picks the closest one, returns bfs to get to it.
+        # just use astar with heuristic of the numberofDots left.
         dist = []
         new=food.asList()
         for  l in range(0, len(new)):
