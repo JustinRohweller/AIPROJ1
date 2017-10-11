@@ -505,9 +505,19 @@ def foodHeuristic(state, problem):
     
     #or: find two farthest, add mazedistances, add distance to second furthest pellet.
     #estimate closest dot.
+
+    #number of walls between you and nearest dot. *4 + number of dots left + how far away (manhattan) dot is.
+    #number of dots times how far away each dot is as a percentage of the total distance.
+
+    #at end, do what he says in the comments for some of this stuff
     dist = []
     new=foodGrid.asList()
+    walls = problem.walls.asList()
+    # print walls
+    #find if there is walls between you and point.
+    #goal: something close to the mazedistance.
 
+    # find closestDot
     for  l in range(0, len(new)):
         dist.append(manhattanDistance(state[0], new[l]))
     second = 0
@@ -523,6 +533,29 @@ def foodHeuristic(state, problem):
     # print state[1].count()
     if state[1].count() > 0:
         closestDot = new[m]
+    
+    # print position
+    # print position[0],", ", position[1]
+    wallsBetween = 0
+    if state[1].count() > 0:
+        for  i in range(0, len(walls)):
+            # if in same row as a wall.
+            if position[0] == walls[i][0]:
+                #and dot is same row as a wall, then check if walls between in column
+                if closestDot[0] == walls[i][0]:
+                    if position[1] > walls[i][1] and walls[i][1] > closestDot[1]:
+                        wallsBetween = wallsBetween + 1
+                    if position[1] < walls[i][1] and walls[i][1] < closestDot[1]:
+                        wallsBetween = wallsBetween + 1
+            # if in same column as a wall.
+            if position[1] == walls[i][1]:
+                #and dot is same column as a wall, then check if walls between in row
+                if closestDot[1] == walls[i][1]:
+                    if position[0] > walls[i][0] and walls[i][0] > closestDot[0]:
+                        wallsBetween = wallsBetween + 1
+                    if position[0] < walls[i][0] and walls[i][0] < closestDot[0]:
+                        wallsBetween = wallsBetween + 1
+    # print 'wallsBetween', wallsBetween
     # print "closestDot", closestDot
         # if idx != 0:
         #     del dist[idx]
@@ -570,83 +603,22 @@ def foodHeuristic(state, problem):
         # return mazeDistance(pos1, pos2, position)
 
     #mazeDistance
-    x1, y1 = position
-    x2, y2 = closestDot
-    walls = problem.walls
-    assert not walls[x1][y1], 'point1 is a wall: ' + str(position)
-    assert not walls[x2][y2], 'point2 is a wall: ' + str(closestDot)
+    # distanceToDot = mazeDistance(position, closestDot, gameState)
 
 
     #all this just to solve the miniproblem.
     # prob = PositionSearchProblem(problem, start=position, goal=closestDot, warn=False, visualize=False)
     # print prob
 
-    from game import Directions
-    from util import Queue
-    myFringe = Queue()
-    exploredStates = set()
-   
-    
-    
-    startState = [state, []]
-    myFringe.push(startState)
-    if (position == closestDot):
-      print 'start position is end.'
-      # return Directions.STOP
-    #loop forever (only return escapes.)
-    keepLooping = True
-    while (keepLooping):
-      #if fringe is empty, we failed to add another item.
-      if (myFringe.isEmpty()):
-        print 'failure fringe is empty.'
-        keepLooping = False
-        # return ['failure']
-      #if not empty, take most recent one, check if goal, return how got there.
-      else:
-        poppedState = myFringe.pop()
-        # print poppedState[0][0][0]
-        if (closestDot == poppedState[0][0][0]):
-          answerArray = []
-          #for length of array, #print poppedStates directionArray,
-          # populate answerArray with Directions to reach goal.
-          for i in range(0, len(poppedState[1])):
-            if (poppedState[1][i] == "North"):
-              answerArray.append(Directions.NORTH)
-            if (poppedState[1][i] == "South"):
-              answerArray.append(Directions.SOUTH)
-            if (poppedState[1][i] == "East"):
-              answerArray.append(Directions.EAST)
-            if (poppedState[1][i] == "West"):
-              answerArray.append(Directions.WEST)
-          #print len(answerArray)
-          distanceToDot = len(answerArray)
-          keepLooping = False
-        #if poppedState not in fringe (shouldn't be we just popped it.) or exploredState (should not explore repeated states)
-        # then add it to explored, and add children to the fringe.
-        if (not(poppedState[0][0][0] in exploredStates)):
-          exploredStates.add(poppedState[0][0][0])
-          #print "NODE EXPLORED: ", poppedState[0][0]
-          #call successor only on coordinates.
-          print "her", poppedState[0][0]
-          newSuccessors = problem.getSuccessors(poppedState[0][0][0])
-          newPathGuide = poppedState[1]
-      #get all successors, put them all in fringe. with how to get there.
-          for i in range(0, len(newSuccessors)):
-            print newSuccessors[i][1]
-            newPathGuide.append(newSuccessors[i][1])
-            nextNode = [newSuccessors[i], newPathGuide]
-            myFringe.push(nextNode)
-            newPathGuide = newPathGuide[:-1]    
-
-
-
     # distanceToDot = len(search.bfs(prob))
-    print "distanceToDot: ", distanceToDot
+
+    # print "distanceToDot: ", distanceToDot
     # put in check for whether distanceToDot is a lot bigger than the approximation, if so, test with different dot. 
 
     #idea: approx closest dot, add mazeDistance to it.
 
     # return distanceToDot + state[1].count()
+    return (total * wallsBetween) + wallsBetween
 
     return 0
 
