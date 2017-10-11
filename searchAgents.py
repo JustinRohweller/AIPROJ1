@@ -529,13 +529,10 @@ def foodHeuristic(state, problem):
             total = dist[m]
             idx = m
    
-    #this is closest dot: seems working
-    # print state[1].count()
+    #this is closest dot approx: seems to be working
     if state[1].count() > 0:
         closestDot = new[m]
     
-    # print position
-    # print position[0],", ", position[1]
     wallsBetween = 0
     if state[1].count() > 0:
         for  i in range(0, len(walls)):
@@ -555,72 +552,8 @@ def foodHeuristic(state, problem):
                         wallsBetween = wallsBetween + 1
                     if position[0] < walls[i][0] and walls[i][0] < closestDot[0]:
                         wallsBetween = wallsBetween + 1
-    # print 'wallsBetween', wallsBetween
-    # print "closestDot", closestDot
-        # if idx != 0:
-        #     del dist[idx]
-          
-        # idx2 = 0
-        # # print "idx: ", idx
-        # for  m in range(0, len(dist)):
-        #     if second < dist[m]:
-        #         second = dist[m]
-        #         idx2 = dist[m]
-
-        # x = manhattanDistance(new[idx], dist2[idx2])
-        # total = (state[1].count()+ (total-1)) - total
-        # if state[1].count() == 13:
-        #   for j in range(0, len(new)):
-        #     for k in range(0, len(new[j])):
-        #       new[j][k] = 0
-              # if foodGrid[j][k] == True:
-                    # print 'jk: ', j,k
-                  # dist.append(manhattanDistance(state[0], [j][k]))
-        # if state[1].count() == 13:
-            # print "first: ", x
-            # print "second: ", mazeDistance( (2,4), (5,6), problem)
-        # print "new: ", total
-        # print ""
-        # if state[1].count() == 13:
-          # print "end"
-
-        # minimum = 500000
-        # for i in range(0, len(dist)):
-        #     if dist[i] < minimum:
-        #       minimum = dist[i]
-        # # print "min: ", minimum 
-        # # print "pellets: ", state[1].count()
-        # if (state[1].count()== 0 or minimum == 500000):
-        #   return 0
-        # else:
-        #   return float(minimum)
-
-        # print state[1].count()
-        # if total <= 0:
-        #   return 0
-        # else:
-        #   return total
-        # return mazeDistance(pos1, pos2, position)
-
-    #mazeDistance
-    # distanceToDot = mazeDistance(position, closestDot, gameState)
-
-
-    #all this just to solve the miniproblem.
-    # prob = PositionSearchProblem(problem, start=position, goal=closestDot, warn=False, visualize=False)
-    # print prob
-
-    # distanceToDot = len(search.bfs(prob))
-
-    # print "distanceToDot: ", distanceToDot
-    # put in check for whether distanceToDot is a lot bigger than the approximation, if so, test with different dot. 
-
-    #idea: approx closest dot, add mazeDistance to it.
-
-    # return distanceToDot + state[1].count()
+    # weight in favor of eating closest dot, but keep the fact that there is walls in mind.
     return (total * wallsBetween) + wallsBetween
-
-    # return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
