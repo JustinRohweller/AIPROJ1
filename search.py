@@ -258,7 +258,7 @@ def uniformCostSearch(problem):
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          #print "NODE EXPLORED: ", poppedState[0][0]
+          # print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -266,7 +266,8 @@ def uniformCostSearch(problem):
           for i in range(0, len(newSuccessors)):
             newPathGuide.append(newSuccessors[i][1])
             nextNode = [newSuccessors[i], newPathGuide]
-            myFringe.push(nextNode, nextNode[0][2])
+            nextNodeValue = len(poppedState[1])+nextNode[0][2]
+            myFringe.push(nextNode, nextNodeValue)
             newPathGuide = newPathGuide[:-1]
 
     #print ""
@@ -296,8 +297,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     
     
     
-    startState = [[problem.getStartState(), -1], []]
+    startState = [[problem.getStartState(), 0], []]
     myFringe.push(startState, heuristic(problem.getStartState(), problem))
+    print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     if (problem.isGoalState(problem.getStartState())):
       
       return Directions.STOP
@@ -329,7 +331,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         # then add it to explored, and add children to the fringe.
         if (not(poppedState[0][0] in exploredStates)):
           exploredStates.add(poppedState[0][0])
-          #print "NODE EXPLORED: ", poppedState[0][0]
+          #it is popping off the wrong node.
+          # print "NODE EXPLORED: ", poppedState[0][0]
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
@@ -337,7 +340,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
           for i in range(0, len(newSuccessors)):
             newPathGuide.append(newSuccessors[i][1])
             nextNode = [newSuccessors[i], newPathGuide]
-            nextNodeValue = (nextNode[0][2])+(heuristic(nextNode[0][0], problem))
+            nextNodeValue = (len(poppedState[1])+nextNode[0][2])+(heuristic(nextNode[0][0], problem))
+            # print "2nd: ", nextNode[0][0]
             myFringe.push(nextNode, nextNodeValue)
             newPathGuide = newPathGuide[:-1]
 

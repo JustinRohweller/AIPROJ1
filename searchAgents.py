@@ -501,13 +501,6 @@ def foodHeuristic(state, problem):
     
 
     #zx
-    #plans: find mazedistance to closest position, add 1 for number of pellets left.
-    
-    #or: find two farthest, add mazedistances, add distance to second furthest pellet.
-    #estimate closest dot.
-
-    #number of walls between you and nearest dot. *4 + number of dots left + how far away (manhattan) dot is.
-    #number of dots times how far away each dot is as a percentage of the total distance.
 
     dist = []
     new=foodGrid.asList()
