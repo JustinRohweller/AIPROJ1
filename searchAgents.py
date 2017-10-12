@@ -386,7 +386,7 @@ def cornersHeuristic(state, problem):
     top, right = walls.height-2, walls.width-2
     "*** YOUR CODE HERE ***"
     #just however many pellets are left.
-    print state[1].count()
+    # print state[1].count()
     if state[1].count() == 0:
       return 0
     else:
@@ -580,21 +580,7 @@ class ClosestDotSearchAgent(SearchAgent):
         # works, but perhaps not as fast as I would like.
         #checks how far away every dot is, then picks the closest one, returns bfs to get to it.
         # just use astar with heuristic of the numberofDots left.
-        dist = []
-        new=food.asList()
-        for  l in range(0, len(new)):
-            dist.append(mazeDistance(startPosition, new[l], gameState))
-        second = 0
-        total = 600000
-        idx = 0
-        dist2 = dist
-        for  m in range(0, len(dist)):
-            if total > dist[m]:
-                total = dist[m]
-                idx = m
-        point2 = new[idx] # closest dot.
-        prob = PositionSearchProblem(gameState, start=startPosition, goal=point2, warn=False, visualize=False)
-        return search.bfs(prob)
+        return search.bfs(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -630,7 +616,11 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        foodList = self.food.asList()
+        for i in range(len(foodList)):
+            if state == foodList[i]:
+                return True
+        return False
 
 def mazeDistance(point1, point2, gameState):
     """

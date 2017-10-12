@@ -303,7 +303,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     
     startState = [[problem.getStartState(), 0], [], 0]
     myFringe.push(startState, heuristic(problem.getStartState(), problem))
-    print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
+    # print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     if (problem.isGoalState(problem.getStartState())):
       
       return Directions.STOP
