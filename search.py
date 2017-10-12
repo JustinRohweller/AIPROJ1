@@ -226,7 +226,7 @@ def uniformCostSearch(problem):
    
     
     
-    startState = [[problem.getStartState(), -1], []]
+    startState = [[problem.getStartState(), 0], [], 0]
     myFringe.push(startState, 0)
     if (problem.isGoalState(problem.getStartState())):
       return Directions.STOP
@@ -262,12 +262,16 @@ def uniformCostSearch(problem):
           #call successor only on coordinates.
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
-      #get all successors, put them all in fringe. with how to get there.
+          # print poppedState[2]
+          prevCost = poppedState[2]
+      #get all successors, put them all in fringe. with how to get there. and how much it cost.
           for i in range(0, len(newSuccessors)):
             newPathGuide.append(newSuccessors[i][1])
-            nextNode = [newSuccessors[i], newPathGuide]
-            nextNodeValue = len(poppedState[1])+nextNode[0][2]
-            myFringe.push(nextNode, nextNodeValue)
+            # print newSuccessors[i][2]
+            newPathCost = prevCost + newSuccessors[i][2]
+
+            nextNode = [newSuccessors[i], newPathGuide, newPathCost]
+            myFringe.push(nextNode, newPathCost)
             newPathGuide = newPathGuide[:-1]
 
     #print ""
@@ -297,7 +301,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     
     
     
-    startState = [[problem.getStartState(), 0], []]
+    startState = [[problem.getStartState(), 0], [], []]
     myFringe.push(startState, heuristic(problem.getStartState(), problem))
     print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     if (problem.isGoalState(problem.getStartState())):
