@@ -301,7 +301,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     
     
     
-    startState = [[problem.getStartState(), 0], [], []]
+    startState = [[problem.getStartState(), 0], [], 0]
     myFringe.push(startState, heuristic(problem.getStartState(), problem))
     print "HEURISTIC: ", heuristic(problem.getStartState(), problem)
     if (problem.isGoalState(problem.getStartState())):
@@ -341,12 +341,16 @@ def aStarSearch(problem, heuristic=nullHeuristic):
           newSuccessors = problem.getSuccessors(poppedState[0][0])
           newPathGuide = poppedState[1]
       #get all successors, put them all in fringe. with how to get there.
+          prevCost = poppedState[2] 
+
           for i in range(0, len(newSuccessors)):
             newPathGuide.append(newSuccessors[i][1])
-            nextNode = [newSuccessors[i], newPathGuide]
-            nextNodeValue = (len(poppedState[1])+nextNode[0][2])+(heuristic(nextNode[0][0], problem))
+            # nextNodeValue = (len(poppedState[1])+nextNode[0][2])+(heuristic(nextNode[0][0], problem))
             # print "2nd: ", nextNode[0][0]
-            myFringe.push(nextNode, nextNodeValue)
+
+            newPathCost = prevCost + newSuccessors[i][2] + heuristic(newSuccessors[i][0], problem)
+            nextNode = [newSuccessors[i], newPathGuide, newPathCost]
+            myFringe.push(nextNode, newPathCost)
             newPathGuide = newPathGuide[:-1]
 
     #print ""
