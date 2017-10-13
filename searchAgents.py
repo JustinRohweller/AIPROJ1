@@ -498,17 +498,10 @@ def foodHeuristic(state, problem):
     #then, we already wrote code to multiply by however many pellets are left.
     """other ideas^"""
     from util import manhattanDistance
-    
-
-    #zx
-
     dist = []
     new=foodGrid.asList()
     walls = problem.walls.asList()
-    # print walls
     #find if there is walls between you and point.
-    #goal: something close to the mazedistance.
-
     # estimate closestDot
     for  l in range(0, len(new)):
         dist.append(manhattanDistance(state[0], new[l]))
@@ -520,11 +513,9 @@ def foodHeuristic(state, problem):
         if total > dist[m]:
             total = dist[m]
             idx = m
-   
     #this is closest dot approx: seems to be working
     if state[1].count() > 0:
         closestDot = new[m]
-    
     wallsBetween = 0
     if state[1].count() > 0:
         for  i in range(0, len(walls)):
