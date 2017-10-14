@@ -424,17 +424,7 @@ def cornersHeuristic(state, problem):
         if state[1].count() > 1:
             secondDot = food[secondIdx]
             dotsDistance = (manhattanDistance(food[secondIdx], food[idx]))
-    
-    # sameRow = False
-    # sameColumn = False
-    # if state[1].count() > 0:
-    #     for  i in range(0, len(food)):
-    #         # if in same row as a wall.
-    #         if position[0] == food[i][0]:
-    #             sameRow = True
-    #         # if in same column as a wall.
-    #         if position[1] == food[i][1]:
-    #             sameColumn = True
+
     return dist[secondIdx] + dotsDistance
 
     
@@ -530,61 +520,49 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state
+    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    top, right = walls.height-2, walls.width-2
     "*** YOUR CODE HERE ***"
-     # print "foodGrid: ", foodGrid
-    # get manhattan for each food, multiply closest one by number of foods left.
-    # find farthest one, divide by number of pellets left (assumes theres is obstacles.)
-    #how far away is closest pellet? subtract one.
-
-    #iterate through new, checking manhattanDistance to each one.
-    # Find minimum manhattanDistance,
-    #all distances minus number of dots? (weigh in favor of dots)
-    # get grid, pretend it has no walls, solve, return.
-
-    #for all of foodgrid, if food, append the manhattan distance to it to our array.
-    #then, we already wrote code to multiply by however many pellets are left.
-    """other ideas^"""
     from util import manhattanDistance
+    wallList = walls.asList()
+    food = problem.food.asList()
+    position = state[0]
+
     dist = []
-    new=foodGrid.asList()
-    walls = problem.walls.asList()
-    #find if there is walls between you and point.
-    # estimate closestDot
-    for  l in range(0, len(new)):
-        dist.append(manhattanDistance(state[0], new[l]))
-    second = 0
-    total = 600000
+    for i in range(0, len(food)):
+      dist.append(manhattanDistance(position, food[i]))
+    
+    farthest = -600000
     idx = 0
-    dist2 = dist
+    prevIdx = -1
     for  m in range(0, len(dist)):
-        if total > dist[m]:
-            total = dist[m]
+        if farthest < dist[m]:
+            if farthest != -600000:
+               prevIdx = idx
+            farthest = dist[m]
             idx = m
-    #this is closest dot approx: seems to be working
+    farthestDot = 0
     if state[1].count() > 0:
-        closestDot = new[m]
-    wallsBetween = 0
-    if state[1].count() > 0:
-        for  i in range(0, len(walls)):
-            # if in same row as a wall.
-            if position[0] == walls[i][0]:
-                #and dot is same row as a wall, then check if walls between in column
-                if closestDot[0] == walls[i][0]:
-                    if position[1] > walls[i][1] and walls[i][1] > closestDot[1]:
-                        wallsBetween = wallsBetween + 1
-                    if position[1] < walls[i][1] and walls[i][1] < closestDot[1]:
-                        wallsBetween = wallsBetween + 1
-            # if in same column as a wall.
-            if position[1] == walls[i][1]:
-                #and dot is same column as a wall, then check if walls between in row
-                if closestDot[1] == walls[i][1]:
-                    if position[0] > walls[i][0] and walls[i][0] > closestDot[0]:
-                        wallsBetween = wallsBetween + 1
-                    if position[0] < walls[i][0] and walls[i][0] < closestDot[0]:
-                        wallsBetween = wallsBetween + 1
-    # weight in favor of eating closest dot, but keep the fact that there is walls in mind.
-    return (total * wallsBetween) + wallsBetween
+        farthestDot = food[idx]
+    
+    secondDot = 0
+    dotsDistance = 0
+    secondIdx = 0
+    if prevIdx != -1:
+        secondDist = dist
+        secondDist[idx] = -600000
+        secondDot = -600000
+        for  m in range(0, len(secondDist)):
+            if secondDot < secondDist[m]:
+                if secondDot != -600000:
+                  secondPrevIdx = secondIdx
+                secondDot = secondDist[m]
+                secondIdx = m
+        if state[1].count() > 1:
+            secondDot = food[secondIdx]
+            dotsDistance = (manhattanDistance(food[secondIdx], food[idx]))
+            
+    return dist[secondIdx] + dotsDistance
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
